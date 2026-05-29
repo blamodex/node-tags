@@ -1,0 +1,44 @@
+erDiagram
+    tags ||--o{ tags_taggables : "applied in"
+    taggables ||--o{ tags_taggables : "matches polymorphic ref (no FK)"
+    taggers   ||--o{ tags_taggables : "matches polymorphic ref (no FK)"
+
+    tags {
+        bigint    id PK
+        uuid      uuid
+        string    slug
+        string    name
+        timestamp deleted_at
+        timestamp updated_at
+        timestamp created_at
+    }
+
+    taggables {
+        bigint    id PK
+        bigint    taggable_id   "polymorphic"
+        string    taggable_type "polymorphic"
+        timestamp deleted_at
+        timestamp created_at
+        timestamp updated_at
+    }
+
+    taggers {
+        bigint    id PK
+        bigint    tagger_id   "polymorphic"
+        string    tagger_type "polymorphic"
+        timestamp deleted_at
+        timestamp created_at
+        timestamp updated_at
+    }
+
+    tags_taggables {
+        bigint    id PK
+        bigint    tag_id        FK
+        bigint    tagger_id     "polymorphic"
+        string    tagger_type   "polymorphic"
+        bigint    taggable_id   "polymorphic"
+        string    taggable_type "polymorphic"
+        timestamp deleted_at
+        timestamp created_at
+        timestamp updated_at
+    }

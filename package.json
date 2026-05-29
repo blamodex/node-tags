@@ -1,0 +1,77 @@
+{
+  "name": "@blamodex/node-tags",
+  "version": "0.1.0",
+  "description": "Polymorphic tagging system for Node.js with Drizzle ORM support",
+  "license": "MIT",
+  "author": "Blamodex",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/blamodex/node-tags.git"
+  },
+  "homepage": "https://github.com/blamodex/node-tags#readme",
+  "bugs": {
+    "url": "https://github.com/blamodex/node-tags/issues"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "type": "module",
+  "types": "./dist/index.d.ts",
+  "keywords": [
+    "tags",
+    "tagging",
+    "polymorphic",
+    "drizzle",
+    "drizzle-orm",
+    "database",
+    "mysql",
+    "sqlite"
+  ],
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    },
+    "./drizzle": {
+      "import": "./dist/DrizzleAdapter.js",
+      "types": "./dist/DrizzleAdapter.d.ts"
+    },
+    "./schema": {
+      "import": "./dist/schema.js",
+      "types": "./dist/schema.d.ts"
+    },
+    "./sqlite": {
+      "import": "./dist/sqlite.js",
+      "types": "./dist/sqlite.d.ts"
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsc --watch",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:coverage": "vitest run --coverage",
+    "lint": "eslint src/"
+  },
+  "devDependencies": {
+    "@eslint/js": "^10.0.1",
+    "@types/node": "^25.7.0",
+    "@vitest/coverage-v8": "^4.1.6",
+    "drizzle-orm": "^0.45.2",
+    "eslint": "^10.3.0",
+    "typescript": "^5.7.0",
+    "typescript-eslint": "^8.59.3",
+    "vitest": "^4.1.6"
+  },
+  "peerDependencies": {
+    "drizzle-orm": ">=0.35.0"
+  },
+  "peerDependenciesMeta": {
+    "drizzle-orm": {
+      "optional": true
+    }
+  }
+}
