@@ -1,4 +1,4 @@
-export { TagManager } from './TagManager.js'
+export { TagService } from './TagService.js'
 export type {
   Tag,
   TagsTaggable,

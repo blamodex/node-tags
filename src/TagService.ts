@@ -1,7 +1,7 @@
 import { randomUUID } from 'node:crypto'
 import type { DatabaseAdapter, Tag, TagsTaggable, Taggable, Tagger } from './types.js'
 
-export class TagManager {
+export class TagService {
   private db: DatabaseAdapter
 
   constructor(opts: { db: DatabaseAdapter }) {

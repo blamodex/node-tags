@@ -36,16 +36,16 @@
       "types": "./dist/index.d.ts"
     },
     "./drizzle": {
-      "import": "./dist/DrizzleAdapter.js",
-      "types": "./dist/DrizzleAdapter.d.ts"
+      "import": "./dist/adapters/DrizzleAdapter.js",
+      "types": "./dist/adapters/DrizzleAdapter.d.ts"
     },
     "./schema": {
-      "import": "./dist/schema.js",
-      "types": "./dist/schema.d.ts"
+      "import": "./dist/schema/mysql.js",
+      "types": "./dist/schema/mysql.d.ts"
     },
     "./sqlite": {
-      "import": "./dist/sqlite.js",
-      "types": "./dist/sqlite.d.ts"
+      "import": "./dist/schema/sqlite.js",
+      "types": "./dist/schema/sqlite.d.ts"
     }
   },
   "files": [

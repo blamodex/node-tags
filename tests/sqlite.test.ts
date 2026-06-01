@@ -1,6 +1,6 @@
 import { describe, it, expect, vi } from 'vitest'
-import { setup } from './sqlite.js'
-import { TagManager } from './TagManager.js'
+import { setup } from '../src/schema/sqlite.js'
+import { TagService } from '../src/TagService.js'
 
 function makeMockDb(opts: { hasExec?: boolean } = {}) {
   const whereResult = { where: vi.fn().mockResolvedValue([]) }
@@ -20,12 +20,12 @@ function makeMockDb(opts: { hasExec?: boolean } = {}) {
 }
 
 describe('sqlite setup', () => {
-  it('returns a TagManager instance', () => {
+  it('returns a TagService instance', () => {
     const { db } = makeMockDb()
 
     const result = setup(db)
 
-    expect(result).toBeInstanceOf(TagManager)
+    expect(result).toBeInstanceOf(TagService)
   })
 
   it('runs migrations when $client.exec is available', () => {

@@ -1,6 +1,6 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest'
-import { DrizzleAdapter } from './DrizzleAdapter.js'
-import { tags, tagsTaggables } from './schema.js'
+import { DrizzleAdapter } from '../src/adapters/DrizzleAdapter.js'
+import { tags, tagsTaggables } from '../src/schema/mysql.js'
 
 function mockTagRow(overrides: Record<string, unknown> = {}) {
   return {

@@ -1,6 +1,6 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest'
-import { TagManager } from './TagManager.js'
-import type { DatabaseAdapter, Tag, TagsTaggable } from './types.js'
+import { TagService } from '../src/TagService.js'
+import type { DatabaseAdapter, Tag, TagsTaggable } from '../src/types.js'
 
 function makeTag(overrides: Partial<Tag> = {}): Tag {
   return {
@@ -45,13 +45,13 @@ function makeDb(): DatabaseAdapter {
   }
 }
 
-describe('TagManager', () => {
+describe('TagService', () => {
   let db: DatabaseAdapter
-  let tm: TagManager
+  let tm: TagService
 
   beforeEach(() => {
     db = makeDb()
-    tm = new TagManager({ db })
+    tm = new TagService({ db })
   })
 
   describe('list', () => {

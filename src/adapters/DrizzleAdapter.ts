@@ -1,5 +1,5 @@
 import { eq, and, inArray, isNull } from 'drizzle-orm'
-import type { DatabaseAdapter, Tag, TagsTaggable, Taggable } from './types.js'
+import type { DatabaseAdapter, Tag, TagsTaggable, Taggable } from '../types.js'
 
 type AnyTable = Record<string, any>
 type AnyDb = {
