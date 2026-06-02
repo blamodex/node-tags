@@ -1,6 +1,7 @@
 import { describe, it, expect, vi } from 'vitest'
 import { setup } from '../src/schema/sqlite.js'
-import { TagService } from '../src/TagService.js'
+import { TagService } from '../src/tag-service.js'
+import type { DrizzleDb } from '../src/adapters/drizzle-adapter.js'
 
 function makeMockDb(opts: { hasExec?: boolean } = {}) {
   const whereResult = { where: vi.fn().mockResolvedValue([]) }
@@ -14,7 +15,7 @@ function makeMockDb(opts: { hasExec?: boolean } = {}) {
     update: vi.fn().mockReturnValue(setResult),
     delete: vi.fn().mockReturnValue(whereResult),
     $client: opts.hasExec ? { exec: vi.fn() } : undefined,
-  } as any
+  } as unknown as DrizzleDb & { $client?: { exec?: ReturnType<typeof vi.fn> } }
 
   return { db, whereResult, fromResult, valuesResult }
 }

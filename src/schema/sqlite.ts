@@ -1,6 +1,7 @@
 import { sqliteTable, text, integer } from 'drizzle-orm/sqlite-core'
-import { DrizzleAdapter } from '../adapters/DrizzleAdapter.js'
-import { TagService } from '../TagService.js'
+import { DrizzleAdapter } from '../adapters/drizzle-adapter.js'
+import type { DrizzleDb } from '../adapters/drizzle-adapter.js'
+import { TagService } from '../tag-service.js'
 
 export const tags = sqliteTable('tags', {
   id: integer('id').primaryKey({ autoIncrement: true }),
@@ -47,16 +48,8 @@ const MIGRATE_SQL = `
   );
 `
 
-type AnyDb = {
-  select(): any
-  insert(table: any): any
-  update(table: any): any
-  delete(table: any): any
-}
-
-export function setup(db: AnyDb): TagService {
-  const raw = (db as any).$client
-  if (raw?.exec) raw.exec(MIGRATE_SQL)
+export function setup(db: DrizzleDb & { $client?: { exec?: (sql: string) => void } }): TagService {
+  if (db.$client?.exec) db.$client.exec(MIGRATE_SQL)
 
   const adapter = new DrizzleAdapter({
     db,

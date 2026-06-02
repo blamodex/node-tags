@@ -1,5 +1,5 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest'
-import { TagService } from '../src/TagService.js'
+import { TagService } from '../src/tag-service.js'
 import type { DatabaseAdapter, Tag, TagsTaggable } from '../src/types.js'
 
 function makeTag(overrides: Partial<Tag> = {}): Tag {

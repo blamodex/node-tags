@@ -1,38 +1,44 @@
 import { eq, and, inArray, isNull } from 'drizzle-orm'
+import type { Column, SQL } from 'drizzle-orm'
 import type { DatabaseAdapter, Tag, TagsTaggable, Taggable } from '../types.js'
 
-type AnyTable = Record<string, any>
-type AnyDb = {
-  select(): any
-  insert(table: any): any
-  update(table: any): any
-  delete(table: any): any
+export type DrizzleRow = Record<string, unknown>
+
+interface DrizzleSelectResult {
+  where(condition: SQL | undefined): PromiseLike<DrizzleRow[]>
 }
 
-export interface TagsTableRef extends AnyTable {
-  id: any
-  uuid: any
-  slug: any
-  name: any
-  deleted_at: any
-  updated_at: any
-  created_at: any
+export interface DrizzleDb {
+  select(): { from(source: object): DrizzleSelectResult }
+  insert(table: object): { values(data: Record<string, unknown>): PromiseLike<DrizzleRow[]> }
+  update(table: object): { set(values: Record<string, unknown>): DrizzleSelectResult }
+  delete(table: object): DrizzleSelectResult
 }
 
-export interface TagsTaggablesTableRef extends AnyTable {
-  id: any
-  tag_id: any
-  tagger_id: any
-  tagger_type: any
-  taggable_id: any
-  taggable_type: any
-  deleted_at: any
-  updated_at: any
-  created_at: any
+export interface TagsTableRef {
+  id: Column
+  uuid: Column
+  slug: Column
+  name: Column
+  deleted_at: Column
+  updated_at: Column
+  created_at: Column
+}
+
+export interface TagsTaggablesTableRef {
+  id: Column
+  tag_id: Column
+  tagger_id: Column
+  tagger_type: Column
+  taggable_id: Column
+  taggable_type: Column
+  deleted_at: Column
+  updated_at: Column
+  created_at: Column
 }
 
 export interface DrizzleAdapterConfig {
-  db: AnyDb
+  db: DrizzleDb
   tags: TagsTableRef
   tagsTaggables: TagsTaggablesTableRef
   /** Return the value to use for timestamp columns. Defaults to `new Date()`. Use `() => new Date().toISOString()` for SQLite text columns. */
@@ -40,7 +46,7 @@ export interface DrizzleAdapterConfig {
 }
 
 export class DrizzleAdapter implements DatabaseAdapter {
-  private db: AnyDb
+  private db: DrizzleDb
   private tags: TagsTableRef
   private tagsTaggables: TagsTaggablesTableRef
   private timestamp: () => Date | string
@@ -75,7 +81,7 @@ export class DrizzleAdapter implements DatabaseAdapter {
 
   async listTags(): Promise<Tag[]> {
     const rows = await this.db.select().from(this.tags).where(isNull(this.tags.deleted_at))
-    return rows.map((row: Record<string, any>) => this.toTag(row))
+    return rows.map((row) => this.toTag(row))
   }
 
   async getTag(id: string): Promise<Tag | null> {
@@ -150,12 +156,12 @@ export class DrizzleAdapter implements DatabaseAdapter {
 
     if (!pivotRows.length) return []
 
-    const tagIds = pivotRows.map((r: Record<string, any>) => r.tag_id)
+    const tagIds = pivotRows.map((r) => r.tag_id as number | string)
     const tagRows = await this.db.select()
       .from(this.tags)
       .where(and(inArray(this.tags.id, tagIds), isNull(this.tags.deleted_at)))
 
-    return tagRows.map((row: Record<string, any>) => this.toTag(row))
+    return tagRows.map((row) => this.toTag(row))
   }
 
   async getTagsTaggable(id: string): Promise<TagsTaggable | null> {
@@ -175,29 +181,29 @@ export class DrizzleAdapter implements DatabaseAdapter {
     return Number.isFinite(n) ? n : id
   }
 
-  private toTag(row: Record<string, any>): Tag {
+  private toTag(row: DrizzleRow): Tag {
     return {
       id: String(row.id),
-      uuid: row.uuid,
-      slug: row.slug,
-      name: row.name,
-      deleted_at: row.deleted_at instanceof Date ? row.deleted_at : row.deleted_at ? new Date(row.deleted_at) : null,
-      updated_at: row.updated_at instanceof Date ? row.updated_at : new Date(row.updated_at),
-      created_at: row.created_at instanceof Date ? row.created_at : new Date(row.created_at),
+      uuid: row.uuid as string,
+      slug: row.slug as string,
+      name: row.name as string,
+      deleted_at: row.deleted_at instanceof Date ? row.deleted_at : row.deleted_at ? new Date(row.deleted_at as string) : null,
+      updated_at: row.updated_at instanceof Date ? row.updated_at : new Date(row.updated_at as string),
+      created_at: row.created_at instanceof Date ? row.created_at : new Date(row.created_at as string),
     }
   }
 
-  private toTagsTaggable(row: Record<string, any>): TagsTaggable {
+  private toTagsTaggable(row: DrizzleRow): TagsTaggable {
     return {
       id: String(row.id),
       tag_id: String(row.tag_id),
       tagger_id: String(row.tagger_id),
-      tagger_type: row.tagger_type,
+      tagger_type: row.tagger_type as string,
       taggable_id: String(row.taggable_id),
-      taggable_type: row.taggable_type,
-      deleted_at: row.deleted_at instanceof Date ? row.deleted_at : row.deleted_at ? new Date(row.deleted_at) : null,
-      updated_at: row.updated_at instanceof Date ? row.updated_at : new Date(row.updated_at),
-      created_at: row.created_at instanceof Date ? row.created_at : new Date(row.created_at),
+      taggable_type: row.taggable_type as string,
+      deleted_at: row.deleted_at instanceof Date ? row.deleted_at : row.deleted_at ? new Date(row.deleted_at as string) : null,
+      updated_at: row.updated_at instanceof Date ? row.updated_at : new Date(row.updated_at as string),
+      created_at: row.created_at instanceof Date ? row.created_at : new Date(row.created_at as string),
     }
   }
 }

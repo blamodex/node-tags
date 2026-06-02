@@ -1,5 +1,6 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest'
-import { DrizzleAdapter } from '../src/adapters/DrizzleAdapter.js'
+import { DrizzleAdapter } from '../src/adapters/drizzle-adapter.js'
+import type { DrizzleDb } from '../src/adapters/drizzle-adapter.js'
 import { tags, tagsTaggables } from '../src/schema/mysql.js'
 
 function mockTagRow(overrides: Record<string, unknown> = {}) {
@@ -42,7 +43,7 @@ function makeMockDb() {
       insert: vi.fn().mockReturnValue(valuesResult),
       update: vi.fn().mockReturnValue(setResult),
       delete: vi.fn().mockReturnValue(whereResult),
-    } as any,
+    } as unknown as DrizzleDb,
     whereResult,
     fromResult,
     setResult,

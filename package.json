@@ -36,8 +36,8 @@
       "types": "./dist/index.d.ts"
     },
     "./drizzle": {
-      "import": "./dist/adapters/DrizzleAdapter.js",
-      "types": "./dist/adapters/DrizzleAdapter.d.ts"
+      "import": "./dist/adapters/drizzle-adapter.js",
+      "types": "./dist/adapters/drizzle-adapter.d.ts"
     },
     "./schema": {
       "import": "./dist/schema/mysql.js",
