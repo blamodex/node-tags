@@ -1,3 +1,10 @@
+# 1.0.0 (2026-06-03)
+
+
+### Features
+
+* initial release of node-tags ([0f46fc6](https://github.com/blamodex/node-tags/commit/0f46fc645b1dc115a608dcf467e9bc7693fd2891))
+
 # Changelog
 
 All notable changes to this project will be documented in this file.
